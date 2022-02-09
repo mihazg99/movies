@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-
 import 'LoginModel.dart';
 import 'movie.dart';
 import 'movie_model.dart';
@@ -20,8 +18,8 @@ class MovieProvider {
   Future<bool> getAllMovies() async{
     String? token;
 
-    _loginModel.loginWithUsernameAndPassword().then((value) async {
-      if(value){
+    _loginModel.loginWithUsernameAndPassword().then((isTokenRefreshed) async {
+      if(isTokenRefreshed){
         token = _loginModel.token;
         print("token: $token");
 
