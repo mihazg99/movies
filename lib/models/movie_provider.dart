@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
-import 'LoginModel.dart';
+import 'package:eventgreen/services/api_manager.dart';
+import 'package:flutter/cupertino.dart';
 import 'movie.dart';
 import 'movie_model.dart';
 
-class MovieProvider {
-  MovieProvider(this._loginModel);
-
-  LoginModel _loginModel;
+class MovieProvider extends ChangeNotifier{
+  final ApiManager _api = ApiManager();
 
   List<Movie>? _movies = [];
   bool _isLoading = true;
@@ -16,11 +15,10 @@ class MovieProvider {
 
   ///get all movies and store it in [_movies]
   Future<bool> getAllMovies() async{
-    String? token;
+    print("get all movies");
+    _api.loginWithUsernameAndPassword("mihael.ivicic99@gmail.com","=HE\$yWsLrC}2%-S@").then((token) async {
 
-    _loginModel.loginWithUsernameAndPassword().then((isTokenRefreshed) async {
-      if(isTokenRefreshed){
-        token = _loginModel.token;
+      if(token != null){
         print("token: $token");
 
         try{
@@ -41,15 +39,11 @@ class MovieProvider {
             var url = element.attributes!.poster!.data!.attributes!.url;
 
             Movie movie = new Movie(name, year, url);
-            print(movie);
             _movies!.add(movie);
           });
 
-          print(response.data.toString());
-          print(data.data![0].attributes!.publicationYear.toString());
-          print(_movies);
-
           _isLoading = false;
+          notifyListeners();
 
         }catch(error){
           print(error);

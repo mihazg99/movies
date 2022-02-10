@@ -1,6 +1,6 @@
-import 'package:eventgreen/models/LoginModel.dart';
+import 'package:eventgreen/models/login_model.dart';
 import 'package:eventgreen/screens/login/checkbox.dart';
-import 'package:eventgreen/shared_widgets/PrimaryButton.dart';
+import 'package:eventgreen/shared_widgets/primary_button.dart';
 import 'package:eventgreen/util/style/color_scheme.dart';
 import 'package:eventgreen/util/style/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -52,13 +52,14 @@ class LoginPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: PrimaryButton("Login", () {
               ///function above that is called on login button press
-                provider.loginWithUsernameAndPassword().then((isLogged) {
+                provider.getTokenFromServer("mihael.ivicic99@gmail.com","=HE\$yWsLrC}2%-S@").then((isLogged){
                 if (!isLogged) {
-                  _showAlertDialog(context);
-                }else{
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder)=>MoviesPage()));
-                }
-              });
+                    _showAlertDialog(context);
+            }else{
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder)=>MoviesPage()));
+              }
+                });
+
             }, MediaQuery.of(context).size.width),
           )
         ],

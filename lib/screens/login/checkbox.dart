@@ -2,7 +2,7 @@ import 'package:eventgreen/util/style/color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/LoginModel.dart';
+import '../../models/login_model.dart';
 
 class LoginCheckbox extends StatefulWidget {
 

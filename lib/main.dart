@@ -1,7 +1,6 @@
-import 'package:eventgreen/models/LoginModel.dart';
+import 'package:eventgreen/models/login_model.dart';
 import 'package:eventgreen/models/movie_provider.dart';
 import 'package:eventgreen/screens/login/login.dart';
-import 'package:eventgreen/screens/movies/movies.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,9 +9,7 @@ void main() {
     MultiProvider(
       providers: [
         Provider(create: (context) => LoginModel()),
-        ProxyProvider<LoginModel, MovieProvider>(
-            update: (context, loginModel, movieModel) =>
-                MovieProvider(loginModel)),
+        ChangeNotifierProvider<MovieProvider>(create: (context) =>MovieProvider())
       ],
       child: MyApp(),
     ),
