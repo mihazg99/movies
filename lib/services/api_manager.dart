@@ -1,12 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiManager{
+  final dio = Dio();
 
-  Future<String?> loginWithUsernameAndPassword(username,password) async{
+  Future<String?> loginWithUsernameAndPassword() async{
+    final prefs = await SharedPreferences.getInstance();
+
+    var username = prefs.getString('username');
+    var password = prefs.getString('password');
     var jwt;
+
     try{
-      ///initialize dio and add form data
-      var dio = Dio();
+      ///add form data
       var formData = FormData.fromMap({
         'identifier': username,
         'password': password,
@@ -26,5 +32,41 @@ class ApiManager{
 
       return jwt;
     }
+  }
+
+  Future<bool> addMovie(title,year,file) async{
+    this.loginWithUsernameAndPassword().then((token) async{
+      if(token != null){
+
+        try{
+          ///authorization token
+          dio.options.headers["Authorization"] = "Bearer $token";
+          dio.options.contentType = 'application/json';
+
+          ///add form data
+          var formData = FormData.fromMap({
+            'data': {"name": "$title", "publicationYear": year},
+            'files.poster': await MultipartFile.fromFile(file.path,
+          filename: "test"),
+          });
+
+          ///upload new movie to database
+          var response = await dio.post('https://zm-movies-assignment.herokuapp.com/api/movies', data: formData);
+
+          return true;
+
+        }catch(error){
+          print(error);
+
+          return false;
+        }
+
+      }
+
+    }).catchError((onError){
+      print(onError);
+    });
+
+    return false;
   }
 }

@@ -52,14 +52,19 @@ class LoginPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: PrimaryButton("Login", () {
               ///function above that is called on login button press
-                provider.getTokenFromServer("mihael.ivicic99@gmail.com","=HE\$yWsLrC}2%-S@").then((isLogged){
+              provider
+                  .getTokenFromServer()
+                  .then((isLogged) {
                 if (!isLogged) {
-                    _showAlertDialog(context);
-            }else{
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder)=>MoviesPage()));
-              }
-                });
+                  _showAlertDialog(context);
+                } else {
+                  ///save creditentials for later use
+                  provider.saveUsernameAndPassword();
 
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (builder) => MoviesPage()));
+                }
+              });
             }, MediaQuery.of(context).size.width),
           )
         ],
@@ -78,6 +83,7 @@ class LoginPage extends StatelessWidget {
           Container(
             height: 45,
             child: TextField(
+              style: CustomTextStyles.SMALL,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -99,6 +105,7 @@ class LoginPage extends StatelessWidget {
           Container(
             height: 45,
             child: TextField(
+              style: CustomTextStyles.SMALL,
               obscureText: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(

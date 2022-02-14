@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:eventgreen/screens/login/login.dart';
 import 'package:eventgreen/services/api_manager.dart';
-import 'package:flutter/cupertino.dart';
-import 'movie.dart';
-import 'movie_model.dart';
+import 'package:flutter/material.dart';
+import '../models/movie.dart';
+import '../models/movie_model.dart';
 
-class MovieProvider extends ChangeNotifier{
+class MovieProvider extends ChangeNotifier {
   final ApiManager _api = ApiManager();
 
   List<Movie>? _movies = [];
@@ -14,14 +15,14 @@ class MovieProvider extends ChangeNotifier{
   bool get isLoading => _isLoading;
 
   ///get all movies and store it in [_movies]
-  Future<bool> getAllMovies() async{
+  Future<bool> getAllMovies() async {
     print("get all movies");
-    _api.loginWithUsernameAndPassword("mihael.ivicic99@gmail.com","=HE\$yWsLrC}2%-S@").then((token) async {
+    _api
+        .loginWithUsernameAndPassword()
+        .then((token) async {
+      if (token != null) {
 
-      if(token != null){
-        print("token: $token");
-
-        try{
+        try {
           Response response;
           var dio = Dio();
 
@@ -29,7 +30,8 @@ class MovieProvider extends ChangeNotifier{
           print("bearer $token");
           dio.options.headers["Authorization"] = "Bearer $token";
 
-          response = await dio.get('https://zm-movies-assignment.herokuapp.com/api/movies?populate=*');
+          response = await dio.get(
+              'https://zm-movies-assignment.herokuapp.com/api/movies?populate=*');
           var data = movieModelFromJson(response.toString());
 
           ///iterate trough data and store each movie sequence to list
@@ -44,17 +46,19 @@ class MovieProvider extends ChangeNotifier{
 
           _isLoading = false;
           notifyListeners();
-
-        }catch(error){
+        } catch (error) {
           print(error);
 
           return false;
         }
-
       }
-
     });
 
     return true;
+  }
+
+  void logout(context) {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
 }

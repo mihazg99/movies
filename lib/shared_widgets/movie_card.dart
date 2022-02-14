@@ -11,29 +11,36 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
           color: CustomColorScheme.CARD_COLOR,
           borderRadius: BorderRadius.circular(10.0)),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Image.network(_movie.poster!),
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(image: NetworkImage(_movie.poster!),fit: BoxFit.fill)),
           ),
           SizedBox(
             height: 20,
           ),
-          Text(
-            _movie.title!,
-            style: GoogleFonts.montserrat(textStyle: CustomTextStyles.REGULAR),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              _movie.title!,
+              style:
+                  GoogleFonts.montserrat(textStyle: CustomTextStyles.REGULAR),
+            ),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            _movie.year!.toString(),
-            style: GoogleFonts.montserrat(textStyle: CustomTextStyles.SMALL),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              _movie.year!.toString(),
+              style: GoogleFonts.montserrat(textStyle: CustomTextStyles.SMALL),
+            ),
           )
         ],
       ),

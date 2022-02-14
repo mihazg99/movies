@@ -1,4 +1,5 @@
 import 'package:eventgreen/services/api_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginModel {
   String? _username;
@@ -29,14 +30,25 @@ class LoginModel {
     _remember = remember;
   }
 
-  Future<bool> getTokenFromServer(username,password) async{
+  Future<void> saveUsernameAndPassword() async{
+    // Obtain shared preferences.
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('username', _username!);
+    await prefs.setString('password', _password!);
+  }
+
+  Future<bool> getTokenFromServer() async{
 
     try{
-      await api.loginWithUsernameAndPassword(username, password).then((value){
-        _token = value;
+      await api.loginWithUsernameAndPassword().then((value){
+        if(value != null){
+          _token = value;
+          return true;
+        }
       });
+      return false;
 
-      return true;
     }catch(error){
       print(error);
 
