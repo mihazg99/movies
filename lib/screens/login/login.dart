@@ -51,16 +51,15 @@ class LoginPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: PrimaryButton("Login", () {
+              provider.saveUsernameAndPassword();
               ///function above that is called on login button press
               provider
-                  .getTokenFromServer()
+                  .api.loginWithUsernameAndPassword()
                   .then((isLogged) {
-                if (!isLogged) {
+                    print("islogged $isLogged");
+                if (isLogged == null) {
                   _showAlertDialog(context);
                 } else {
-                  ///save creditentials for later use
-                  provider.saveUsernameAndPassword();
-
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (builder) => MoviesPage()));
                 }

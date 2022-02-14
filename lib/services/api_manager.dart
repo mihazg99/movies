@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http_parser/http_parser.dart';
 
 class ApiManager{
   final dio = Dio();
@@ -9,6 +10,11 @@ class ApiManager{
 
     var username = prefs.getString('username');
     var password = prefs.getString('password');
+
+    print("username $username");
+    print("username $password");
+
+
     var jwt;
 
     try{
@@ -25,6 +31,8 @@ class ApiManager{
       if(response.statusCode == 200){
          jwt = response.data['jwt'];
       }
+
+      print("token $jwt");
 
       return jwt;
     }catch(error){
@@ -46,8 +54,7 @@ class ApiManager{
           ///add form data
           var formData = FormData.fromMap({
             'data': {"name": "$title", "publicationYear": year},
-            'files.poster': await MultipartFile.fromFile(file.path,
-          filename: "test"),
+            'files.poster': await MultipartFile.fromFile(file.path,contentType: MediaType("image", "jpeg"),)
           });
 
           ///upload new movie to database

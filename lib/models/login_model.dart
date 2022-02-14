@@ -38,23 +38,4 @@ class LoginModel {
     await prefs.setString('password', _password!);
   }
 
-  Future<bool> getTokenFromServer() async{
-
-    try{
-      await api.loginWithUsernameAndPassword().then((value){
-        if(value != null){
-          _token = value;
-          return true;
-        }
-      });
-      return false;
-
-    }catch(error){
-      print(error);
-
-      return false;
-    }
-
-  }
-
 }
