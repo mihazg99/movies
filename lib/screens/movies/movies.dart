@@ -81,9 +81,10 @@ class _MoviesPageState extends State<MoviesPage> {
         return Container(
           height: 450,
           child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 4 / 7,
+                childAspectRatio: MediaQuery.of(context).size.width /
+                    (MediaQuery.of(context).size.height )-0.02,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 30,
               ),
